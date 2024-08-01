@@ -1,5 +1,7 @@
 import os
 import subprocess
+import time
+import random
 
 
 def install_ffmpeg():
@@ -12,8 +14,21 @@ def install_ffmpeg():
     return True
 
 def download_playlist(output_dir, playlist_url):
-    command = f'spotdl --output "{output_dir}" download {playlist_url}'
-    subprocess.run(command, shell=True, check=True)
+    max_retries = 5
+    base_delay = 1  # Start with a 1-second delay
+
+    for attempt in range(max_retries):
+        try:
+            command = f'spotdl --output "{output_dir}" download {playlist_url}'
+            subprocess.run(command, shell=True, check=True)
+            return  # If successful, exit the function
+        except subprocess.CalledProcessError as e:
+            if attempt < max_retries - 1:  # If it's not the last attempt
+                delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                print(f"Rate limit hit. Retrying in {delay:.2f} seconds...")
+                time.sleep(delay)
+            else:
+                raise  # If all retries failed, raise the exception
 
 # Add this at the beginning of your main execution
 if not install_ffmpeg():
