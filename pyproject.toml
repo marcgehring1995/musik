@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "private-coding-2024"
+version = "0.1.0"
+description = ""
+authors = ["marcgehring1995 <marc.gehring@icloud.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+spotdl = "^4.2.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
